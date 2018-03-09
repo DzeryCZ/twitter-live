@@ -1,15 +1,22 @@
 <?php
 if(!class_exists('JzTwitterOptions')){
-    
+
+    /**
+     * Class JzTwitterOptions
+     */
     class JzTwitterOptions{
-        
-        
+
+        /**
+         * JzTwitterOptions constructor.
+         */
         public function __construct(){
             add_action('admin_menu', array($this, 'add_options_page'));
             add_action('admin_init', array($this, 'register_settings'));
         }
 
-
+        /**
+         * @return array
+         */
         public function get_keys() {
             $api_keys = array();
             $api_keys['consumer_id'] = get_option('consumer_id');
@@ -19,21 +26,35 @@ if(!class_exists('JzTwitterOptions')){
             return $api_keys;
         }
 
+        /**
+         * @param $namespace
+         * @param $name
+         * @return mixed
+         */
         public function _getOption($namespace, $name) {
             return get_option($namespace . '_' . $name);
         }
 
+        /**
+         * @param $namespace
+         * @param $name
+         * @param $value
+         */
         public function _setOption($namespace, $name, $value) {
             update_option($namespace . '_' . $name, $value);
         }
 
-        
-        /* ================ SETTINGS ================ */
-        
+
+        /**
+         * add_options_page
+         */
         public function add_options_page() {
             add_options_page('Twitter Live', 'Twitter Live', 'edit_plugins', 'twitter_ajax', array($this, 'settings_page'));
         }
-        
+
+        /**
+         * register_settings
+         */
         function register_settings() {
             //register our settings
             register_setting('ta-settings-group', 'consumer_id');
@@ -41,7 +62,10 @@ if(!class_exists('JzTwitterOptions')){
             register_setting('ta-settings-group', 'access_token');
             register_setting('ta-settings-group', 'access_token_secret');
         }
-        
+
+        /**
+         * Render Settings page
+         */
         public function settings_page() {
             $api_keys = $this->get_keys();
             ?>
@@ -81,21 +105,10 @@ if(!class_exists('JzTwitterOptions')){
                     </td>
                     </tr>
                 </table>
-
                 <?php submit_button(); ?>
-
             </form>
-
-
-
-            
-
-
-
         </div>
         <?php
         }
-        
     }
-    
 }
